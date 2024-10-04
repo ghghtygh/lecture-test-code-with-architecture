@@ -1,10 +1,11 @@
 package com.example.demo.service;
 
-import com.example.demo.exception.CertificationCodeNotMatchedException;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.dto.UserCreateDto;
-import com.example.demo.model.dto.UserUpdateDto;
-import com.example.demo.repository.UserEntity;
+import com.example.demo.user.exception.CertificationCodeNotMatchedException;
+import com.example.demo.user.exception.ResourceNotFoundException;
+import com.example.demo.user.domain.UserCreate;
+import com.example.demo.user.domain.UserUpdate;
+import com.example.demo.user.infrastructure.UserEntity;
+import com.example.demo.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
-import static com.example.demo.model.UserStatus.ACTIVE;
-import static com.example.demo.model.UserStatus.PENDING;
+import static com.example.demo.user.domain.UserStatus.ACTIVE;
+import static com.example.demo.user.domain.UserStatus.PENDING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -87,7 +88,7 @@ class UserServiceTest {
     @Test
     void userCreateDto를_이용하여_유저를_생성할_수_있다() {
         //given
-        UserCreateDto userCreateDto = UserCreateDto.builder()
+        UserCreate userCreate = UserCreate.builder()
                 .email("t3@t.com")
                 .address("Seoul")
                 .nickname("jupo15")
@@ -96,7 +97,7 @@ class UserServiceTest {
 
         //when
         UserEntity byId = userService.getById(1);
-        UserEntity userEntity = userService.create(userCreateDto);
+        UserEntity userEntity = userService.create(userCreate);
 
         //then
         assertThat(userEntity.getId()).isNotNull();
@@ -106,13 +107,13 @@ class UserServiceTest {
     @Test
     void userUpdateDto를_이용하여_유저를_수정할_수_있다() {
         //given
-        UserUpdateDto userUpdateDto = UserUpdateDto.builder()
+        UserUpdate userUpdate = UserUpdate.builder()
                 .address("Incheon")
                 .nickname("jupo13-2")
                 .build();
 
         //when
-        UserEntity userEntity = userService.update(1, userUpdateDto);
+        UserEntity userEntity = userService.update(1, userUpdate);
 
         //then
         assertThat(userEntity.getId()).isEqualTo(1);
