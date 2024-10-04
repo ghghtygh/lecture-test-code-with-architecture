@@ -5,7 +5,6 @@ import com.example.demo.user.exception.ResourceNotFoundException;
 import com.example.demo.post.domain.PostCreate;
 import com.example.demo.post.domain.PostUpdate;
 import com.example.demo.post.infrastructure.PostEntity;
-import com.example.demo.post.infrastructure.PostJpaRepository;
 import com.example.demo.user.infrastructure.UserEntity;
 import java.time.Clock;
 
@@ -20,7 +19,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserService userService;
 
-    public PostEntity getPostById(long id) {
+    public PostEntity getById(long id) {
         return postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Posts", id));
     }
 
@@ -34,7 +33,7 @@ public class PostService {
     }
 
     public PostEntity update(long id, PostUpdate postUpdate) {
-        PostEntity postEntity = getPostById(id);
+        PostEntity postEntity = getById(id);
         postEntity.setContent(postUpdate.getContent());
         postEntity.setModifiedAt(Clock.systemUTC().millis());
         return postRepository.save(postEntity);
