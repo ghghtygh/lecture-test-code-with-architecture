@@ -12,10 +12,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @Sql("/sql/user-repository-test-data.sql")
-class UserRepositoryTest {
+class UserJpaRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserJpaRepository userRepository;
 
     @Test
     void findByIdAndStatus_로_유저_데이터를_찾아올_수_있다() {
