@@ -1,12 +1,11 @@
 package com.example.demo.post.service;
 
+import com.example.demo.post.domain.Post;
 import com.example.demo.post.domain.PostCreate;
 import com.example.demo.post.domain.PostUpdate;
-import com.example.demo.post.infrastructure.PostEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 
@@ -28,7 +27,7 @@ class PostServiceTest {
         long postId = 1L;
 
         //when
-        PostEntity result = postService.getById(postId);
+        Post result = postService.getById(postId);
 
         //then
         assertThat(result.getContent()).isEqualTo("hello world");
@@ -45,12 +44,12 @@ class PostServiceTest {
                 .build();
 
         //when
-        PostEntity postEntity = postService.create(postCreate);
+        Post post = postService.create(postCreate);
 
         //then
-        assertThat(postEntity.getId()).isNotNull();
-        assertThat(postEntity.getContent()).isEqualTo("hello world2");
-        assertThat(postEntity.getCreatedAt()).isGreaterThan(0);
+        assertThat(post.getId()).isNotNull();
+        assertThat(post.getContent()).isEqualTo("hello world2");
+        assertThat(post.getCreatedAt()).isGreaterThan(0);
     }
 
     @Test
@@ -61,12 +60,12 @@ class PostServiceTest {
                 .build();
 
         //when
-        PostEntity postEntity = postService.update(1, postUpdate);
+        Post post = postService.update(1, postUpdate);
 
         //then
-        assertThat(postEntity.getId()).isEqualTo(1);
-        assertThat(postEntity.getContent()).isEqualTo("hello world :)");
-        assertThat(postEntity.getModifiedAt()).isGreaterThan(0);
+        assertThat(post.getId()).isEqualTo(1);
+        assertThat(post.getContent()).isEqualTo("hello world :)");
+        assertThat(post.getModifiedAt()).isGreaterThan(0);
     }
 
 }
