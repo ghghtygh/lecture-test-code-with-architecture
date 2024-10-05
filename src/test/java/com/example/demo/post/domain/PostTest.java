@@ -32,7 +32,7 @@ class PostTest {
         Post post = Post.from(postCreate, writer);
 
         //then
-        assertThat(post.getId()).isEqualTo(1);
+        assertThat(post.getId()).isNull();
         assertThat(post.getContent()).isEqualTo("hello world");
         assertThat(post.getWriter().getEmail()).isEqualTo("t@t.c");
         assertThat(post.getWriter().getNickname()).isEqualTo("jupo13");
