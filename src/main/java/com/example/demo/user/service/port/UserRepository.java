@@ -9,6 +9,6 @@ public interface UserRepository {
     Optional<User> findById(long id);
     Optional<User> findByIdAndStatus(long id, UserStatus userStatus);
     Optional<User> findByEmailAndStatus(String email, UserStatus userStatus);
-    User save(User userEntity);
+    User save(User user);
 
 }
