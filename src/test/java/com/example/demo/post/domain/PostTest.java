@@ -1,13 +1,11 @@
 package com.example.demo.post.domain;
 
+import com.example.demo.mock.TestClockHolder;
 import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserStatus;
 import org.junit.jupiter.api.Test;
 
-import java.util.UUID;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class PostTest {
 
@@ -20,7 +18,7 @@ class PostTest {
                 .build();
 
         User writer = User.builder()
-                .email("t@t.c")
+                .email("t@t.com")
                 .nickname("jupo13")
                 .address("Seoul")
                 .status(UserStatus.ACTIVE)
@@ -29,12 +27,13 @@ class PostTest {
 
 
         //when
-        Post post = Post.from(postCreate, writer);
+        Post post = Post.from(postCreate, writer, new TestClockHolder(1678530673958L));
 
         //then
         assertThat(post.getId()).isNull();
         assertThat(post.getContent()).isEqualTo("hello world");
-        assertThat(post.getWriter().getEmail()).isEqualTo("t@t.c");
+        assertThat(post.getCreatedAt()).isEqualTo(1678530673958L);
+        assertThat(post.getWriter().getEmail()).isEqualTo("t@t.com");
         assertThat(post.getWriter().getNickname()).isEqualTo("jupo13");
         assertThat(post.getWriter().getAddress()).isEqualTo("Seoul");
         assertThat(post.getWriter().getStatus()).isEqualTo(UserStatus.ACTIVE);
@@ -44,10 +43,24 @@ class PostTest {
     @Test
     void Post는_PostUpdate_객체로_수정할_수_있다() {
         //given
+        Post post = Post.builder()
+                .id(1L)
+                .content("hello world")
+                .createdAt(1678530673958L)
+                .modifiedAt(0L)
+                .build();
+
+        PostUpdate postUpdate = PostUpdate.builder()
+                .content("hello world :)")
+                .build();
 
         //when
+        post = post.update(postUpdate, new TestClockHolder(1678530673979L));
 
         //then
-
+        assertThat(post.getId()).isEqualTo(1L);
+        assertThat(post.getContent()).isEqualTo("hello world :)");
+        assertThat(post.getCreatedAt()).isEqualTo(1678530673958L);
+        assertThat(post.getModifiedAt()).isEqualTo(1678530673979L);
     }
 }
