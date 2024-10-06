@@ -20,10 +20,7 @@ public class TestContainer {
     public final MailSender mailSender;
     public final UserRepository userRepository;
     public final PostRepository postRepository;
-    public final UserCreateService userCreateService;
-    public final UserReadService userReadService;
-    public final UserUpdateService userUpdateService;
-    public final AuthenticationService authenticationService;
+    public final UserService userService;
     public final PostService postService;
     public final CertificationService certificationService;
     public final UserController userController;
@@ -37,28 +34,22 @@ public class TestContainer {
         this.userRepository = new FakeUserRepository();
         this.postRepository = new FakePostRepository();
         this.certificationService = new CertificationService(mailSender);
-        UserServiceImpl userService = UserServiceImpl.builder()
+        this.userService = UserServiceImpl.builder()
                 .userRepository(userRepository)
                 .certificationService(this.certificationService)
                 .uuidHolder(uuidHolder)
                 .clockHolder(clockHolder)
                 .build();
-        this.userCreateService = userService;
-        this.userReadService = userService;
-        this.userUpdateService = userService;
-        this.authenticationService = userService;
         this.postService = PostServiceImpl.builder()
                 .postRepository(this.postRepository)
                 .userRepository(this.userRepository)
                 .clockHolder(clockHolder)
                 .build();
         this.userController = UserController.builder()
-                .userReadService(userReadService)
-                .userUpdateService(userUpdateService)
-                .authenticationService(authenticationService)
+                .userService(userService)
                 .build();
         this.userCreateController = UserCreateController.builder()
-                .userCreateService(userCreateService)
+                .userService(userService)
                 .build();
         this.postController = PostController.builder()
                 .postService(postService)
