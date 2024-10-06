@@ -12,30 +12,21 @@ import com.example.demo.user.exception.CertificationCodeNotMatchedException;
 import com.example.demo.user.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 
 import static com.example.demo.user.domain.UserStatus.ACTIVE;
 import static com.example.demo.user.domain.UserStatus.PENDING;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
 
 class UserServiceTest {
 
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @BeforeEach
     void setup() {
         FakeMailSender fakeMailSender = new FakeMailSender();
         FakeUserRepository userRepository = new FakeUserRepository();
-        this.userService = UserService.builder()
+        this.userService = UserServiceImpl.builder()
                 .userRepository(userRepository)
                 .certificationService(new CertificationService(fakeMailSender))
                 .uuidHolder(new TestUuidHolder("aaaa"))

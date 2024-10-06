@@ -5,7 +5,7 @@ import com.example.demo.user.domain.UserCreate;
 import com.example.demo.user.domain.UserUpdate;
 import com.example.demo.user.exception.CertificationCodeNotMatchedException;
 import com.example.demo.user.exception.ResourceNotFoundException;
-import com.example.demo.user.service.UserService;
+import com.example.demo.user.service.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 class UserServiceTest {
 
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
 
     @MockBean
     JavaMailSender mailSender;
@@ -94,7 +94,6 @@ class UserServiceTest {
         BDDMockito.doNothing().when(mailSender).send(any(SimpleMailMessage.class));
 
         //when
-        User byId = userService.getById(1);
         User user = userService.create(userCreate);
 
         //then
@@ -147,8 +146,7 @@ class UserServiceTest {
         //given
         //when
         //then
-        assertThatThrownBy(() -> {
-            userService.verifyEmail(2, "00000-000000-000000");
-        }).isInstanceOf(CertificationCodeNotMatchedException.class);
+        assertThatThrownBy(() -> userService.verifyEmail(2, "00000-000000-000000"))
+                .isInstanceOf(CertificationCodeNotMatchedException.class);
     }
 }

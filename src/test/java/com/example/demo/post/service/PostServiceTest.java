@@ -10,23 +10,19 @@ import com.example.demo.user.domain.User;
 import com.example.demo.user.domain.UserStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.SqlGroup;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class PostServiceTest {
 
-    private PostService postService;
+    private PostServiceImpl postService;
 
     @BeforeEach
     void setup() {
 
         FakePostRepository postRepository = new FakePostRepository();
         FakeUserRepository userRepository = new FakeUserRepository();
-        postService = PostService.builder()
+        postService = PostServiceImpl.builder()
                 .postRepository(postRepository)
                 .userRepository(userRepository)
                 .clockHolder(new TestClockHolder(100L))
